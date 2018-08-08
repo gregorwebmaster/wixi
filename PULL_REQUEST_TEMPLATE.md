@@ -1,0 +1,6 @@
+I. Changes requested in ticket:
+  - ....
+  - ....
+  
+II. Additional changes:
+  - e.g. cleaning code or name changes
