@@ -29,7 +29,7 @@ module.exports = () => {
         },
 
         output: {
-            path: __dirname + '/dist/assets/',
+            path: __dirname + '/dist/assets/js/',
             filename: '[name].js'
         },
 
@@ -39,113 +39,111 @@ module.exports = () => {
                 use: ["style-loader", "css-loader"]
             },
 
-                {
-                    test: /\.s[ac]ss$/,
-                    use: ExtractTextPlugin.extract({
-                        use: [{
+            {
+                test: /\.s[ac]ss$/,
+                use: ExtractTextPlugin.extract({
+                    use: [
+                        {
                             loader: "css-loader",
                             options: {
                                 sourceMap: true
                             }
                         },
-                            {
-                                loader: 'postcss-loader',
-                                options: {
-                                    sourceMap: true,
-                                    plugins: function () {
-                                        return [
-                                            require('precss'),
-                                            require('autoprefixer')
-                                        ];
-                                    }
-                                }
-                            },
-                            {
-                                loader: "sass-loader",
-                                options: {
-                                    sourceMap: true,
-                                    includePaths: [
-                                        path.resolve(__dirname, "./node_modules/foundation-sites"),
-                                        path.resolve(__dirname, "./node_modules/@fortawesome/fontawesome-free-webfonts"),
-                                        path.resolve(__dirname + "/app/images")
-                                    ]
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                sourceMap: true,
+                                plugins: function () {
+                                    return [
+                                        require('precss'),
+                                        require('autoprefixer')
+                                    ];
                                 }
                             }
-                        ],
-                        fallback: "style-loader"
-                    })
-                },
-
-                {
-                    test: /\.png|jpe?g|gif$/,
-                    loaders: [{
-                        loader: "file-loader",
-                        options: {
-                            name: "../images/[name].[ext]"
+                        },
+                        {
+                            loader: "sass-loader",
+                            options: {
+                                sourceMap: true,
+                                includePaths: [
+                                    path.resolve(__dirname, "./node_modules/foundation-sites"),
+                                    path.resolve(__dirname, "./node_modules/@fortawesome/fontawesome-free-webfonts"),
+                                    path.resolve(__dirname + "/app/images")
+                                ]
+                            }
                         }
-                    },
+                    ],
+                    fallback: "style-loader"
+                })
+            },
 
-                        "img-loader"
-                    ]
-                },
-
-                {
-                    test: /\.svg$/,
+            {
+                test: /\.png|jpe?g|gif$/,
+                loaders: [{
                     loader: "file-loader",
                     options: {
                         name: "../images/[name].[ext]"
-                    },
-                    include: [
-                        path.resolve(__dirname + "./app/images")
-                    ]
+                    }
                 },
 
-                {
-                    test: /\.eot|ttf|woff|woff2|svg$/,
-                    loader: "file-loader",
-                    options: {
-                        name: "../fonts/[name].[ext]"
-                    },
-                    include: [
-                        path.resolve(__dirname + "/app/fonts"),
-                        path.resolve(__dirname + "/node_modules/@fortawesome/fontawesome-free-webfonts")
-                    ]
-                },
+                    "img-loader"
+                ]
+            },
 
-                {
-                    test: /\.js/,
-                    loader: "babel-loader",
-                    exclude: /node_modues/
-                }
+            {
+                test: /\.svg$/,
+                loader: "file-loader",
+                options: {
+                    name: "../images/[name].[ext]"
+                },
+                include: [
+                    path.resolve(__dirname + "./app/images")
+                ]
+            },
+
+            {
+                test: /\.eot|ttf|woff|woff2|svg$/,
+                loader: "file-loader",
+                options: {
+                    name: "../fonts/[name].[ext]"
+                },
+                include: [
+                    path.resolve(__dirname + "/app/fonts"),
+                    path.resolve(__dirname + "/node_modules/@fortawesome/fontawesome-free-webfonts")
+                ]
+            },
+
+            {
+                test: /\.js/,
+                loader: "babel-loader",
+                exclude: /node_modues/
+            }
             ]
         },
 
         plugins: [
-            new ExtractTextPlugin("[name].css"),
+            new ExtractTextPlugin("../css/[name].css"),
             new webpack.ProvidePlugin({
                 $: "jquery",
                 jQuery: "jquery"
             }),
             new HtmlWebpackPlugin({
-                    chunks: ['main'],
-                    inject: 'head',
-                    filename: path.resolve(__dirname + '/dist/index.php'),
-                    template: path.resolve(__dirname + '/app/index.php')
+                chunks: ['main'],
+                inject: 'head',
+                filename: path.resolve(__dirname + '/dist/src/templates/index.php'),
+                template: path.resolve(__dirname + '/app/src/templates/index.php')
             }),
             new CopyWebpackPlugin(
                 [
                     {
                         from: './app/src/',
-                        to: '../',
+                        to: '../../src/',
                         ignore: [
                             '*Test.php',
                             'composer.*',
-                            '.gitkeep'
+                            '.gitkeep',
+                            "index.php"
                         ]
-                    },
-                    {
-                        from: './app/images/',
-                        to: '../images'
                     }
                 ]
             )
