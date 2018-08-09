@@ -1,35 +1,37 @@
-# DockerTools
-Docker images for modern webdevelopment based on alpine linux
+# Wixi
 
-# Containers
+It's a tool for develop in simple way PHP-JS Application. To minimise requirements we'll use prepared docker container for build & testing process.
 
-## 1. Builder
+_Currently is finished only build container with php, composer, node.js. More about it you can found in [dockertools project repository](https://github.com/gregorwebmaster/dockertools)._
 
-### What is builder container?
-We are using webpack and php composer to help you deployed modern web application. Exemplar App you can found in [project repository](https://github.com/gregorwebmaster/dockertools)
+## Requirments
+* Docker
+* Docker-compose
 
-### Installed Packages
-* Node.js 8
-* NPM 6
-* PHP 7.2
-* PHP Composer 1.6
+## Start a work
+> git clone git@github.com:gregorwebmaster/wixi.git
 
-### Ports
-* 35729  - Live Reload Webpack plugin
+or download [repository](https://github.com/gregorwebmaster/wixi) and next call in app directory
+> docker-compose up [-d]
 
-### Start a build server
-> docker run -v /patch/to/your/app:/workspace -p 35729:35729 gregorwebmaster/ngino:builder
+and __enjoy your work__.
 
-#### using docker-compose
-```
-version: '3.2'
+All other things are happen automatically.
 
-services:
+## App structure
 
-  builder:
-    image: gregorwebmaster/ngino:builder
-    volumes:
-      - /patch/to/your/app:/workspace
-    ports:
-        -35729:35729
-```
+## Webpack configuration
+
+## Learning it
+
+@TODO
+
+## Join the project
+If you have an idea, time and willingness to work, you are welcome :)
+
+## Support & Security
+
+
+## License
+
+The Wixi is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
