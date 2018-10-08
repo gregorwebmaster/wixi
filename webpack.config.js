@@ -2,34 +2,27 @@ let webpack = require("webpack");
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 let LiveReloadPlugin = require("webpack-livereload-plugin");
 let HtmlWebpackPlugin = require('html-webpack-plugin');
-let CopyWebpackPlugin = require('copy-webpack-plugin');
 let shell = require("shelljs");
 let path = require('path');
 
-let composer = true;
 let production = process.env.NODE_ENV === "production" ? true : false;
 
 production ? console.log("Enable production mode.") : null;
 
 module.exports = () => {
-    let workdir = __dirname;
 
-    if (composer && shell.cd("./app/src") && shell.exec("composer install").code !== 0) {
-        shell.echo("Error: Can not install composer");
-        shell.exit(1);
-    }
-    if (shell.pwd().stdout != workdir) shell.cd(workdir);
+    shell.exec("composer install");
 
     let templateModules = {
         entry: {
             main: [
-                './app/js/main.js',
-                './app/scss/main.scss'
+                './resources/js/main.js',
+                './resources/scss/main.scss'
             ]
         },
 
         output: {
-            path: __dirname + '/dist/assets/js/',
+            path: __dirname + '/public/js/',
             filename: '[name].js'
         },
 
@@ -68,7 +61,7 @@ module.exports = () => {
                                 includePaths: [
                                     path.resolve(__dirname, "./node_modules/foundation-sites"),
                                     path.resolve(__dirname, "./node_modules/@fortawesome/fontawesome-free-webfonts"),
-                                    path.resolve(__dirname + "/app/images")
+                                    path.resolve(__dirname + "/resources/images")
                                 ]
                             }
                         }
@@ -97,7 +90,7 @@ module.exports = () => {
                     name: "../images/[name].[ext]"
                 },
                 include: [
-                    path.resolve(__dirname + "./app/images")
+                    path.resolve(__dirname + "./resources/images")
                 ]
             },
 
@@ -108,7 +101,7 @@ module.exports = () => {
                     name: "../fonts/[name].[ext]"
                 },
                 include: [
-                    path.resolve(__dirname + "/app/fonts"),
+                    path.resolve(__dirname + "/resources/fonts"),
                     path.resolve(__dirname + "/node_modules/@fortawesome/fontawesome-free-webfonts")
                 ]
             },
@@ -130,23 +123,9 @@ module.exports = () => {
             new HtmlWebpackPlugin({
                 chunks: ['main'],
                 inject: 'head',
-                filename: path.resolve(__dirname + '/dist/src/templates/index.php'),
-                template: path.resolve(__dirname + '/app/src/templates/index.php')
-            }),
-            new CopyWebpackPlugin(
-                [
-                    {
-                        from: './app/src/',
-                        to: '../../src/',
-                        ignore: [
-                            '*Test.php',
-                            'composer.*',
-                            '.gitkeep',
-                            "index.php"
-                        ]
-                    }
-                ]
-            )
+                template: path.resolve(__dirname + '/resources/templates/index.php'),
+                filename: path.resolve(__dirname + '/src/templates/index.php')
+            })
         ]
     };
 
