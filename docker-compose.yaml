@@ -8,3 +8,21 @@ services:
       - .:/workspace
     ports:
       - 35729:35729
+
+  proxy:
+    image: gregorwebmaster/ngino_proxy
+    volumes:
+      - config/vhosts:/etc/nginx/vhosts
+      - config/ssl:/etc/nginx/ssl
+    ports:
+      - 8080:80
+
+  assets:
+    image: gregorwebmaster/ngino_proxy
+    volumes:
+    - dist/assets:/var/www
+
+  php-fpm:
+    image: php:7.2-fpm-alpine3.7
+    volumes:
+    - dist/src:/var/www
